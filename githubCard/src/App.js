@@ -1,109 +1,58 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import axios from "axios";
+import UserCard from "./UserCard";
+import Search from "./Search";
+import "./App.css";
+
+
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      userName: "devin5",
+      username: "devin5",
       user: {},
-      followers: [],
-      counter: 0
+      folllowers: []
     };
   }
 
-  changeUserName = (userName) => {
-    this.setState({ userName });
-  }
 
-  fetchUser = () => {
-    fetch(`https://api.github.com/users/${this.state.userName}`)
-      .then(res => res.json())
-      .then(data => this.setState({ user: data }));
-  }
-
-  fetchFollowers = () => {
-    fetch(`https://api.github.com/users/${this.state.userName}/followers`)
-      .then(res => res.json())
-      .then(data => this.setState({ followers: data }));
-  }
-
-  // useEffect(() => {fetch}, [])
   componentDidMount() {
-    console.log("First Render (mounting)");
-    this.fetchUser();
-    this.fetchFollowers();
+    axios
+      .get(`https://api.github.com/users/${this.state.username}`)
+      .then(res => this.setState({ user: res.data }))
+      .catch(err => console.log(err));
+    axios
+      .get(`https://api.github.com/users/${this.state.username}/followers`)
+      .then(res => this.setState({ followers: res.data }))
+      .catch(err => console.log(err));
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    console.log(this.state);
-    // this will cause an infinite loop
-    // this.setState({counter: this.state.counter+1 });
 
-    // useEffect(() => {fetch}, [this.state.userName])
-    if (prevState.userName !== this.state.userName) {
-      this.fetchUser();
-      this.fetchFollowers();
+  componentDidUpdate(prevProps, prevState){
+    if(prevState.username !== this.state.username){
+      axios
+      .get(`https://api.github.com/users/${this.state.username}`)
+      .then(res => this.setState({ user: res.data }))
+      .catch(err => console.log(err));
+    axios
+      .get(`https://api.github.com/users/${this.state.username}/followers`)
+      .then(res => this.setState({ followers: res.data }))
+      .catch(err => console.log(err));
     }
+  }
 
+  changeUser = (user) => {
+    this.setState({username: user})
   }
 
   render() {
     return (
-      <div className="App">
-        <Search changeUserName={this.changeUserName} />
-        <UserCard user={this.state.user} followers={this.state.followers} />
-      </div>
+      <>
+        <Search changeUser={this.changeUser} />
+        <UserCard followers={this.state.followers} user={this.state.user} />
+      </>
     );
   }
 }
-
-class Search extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      search: "",
-    };
-  }
-
-  handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  }
-
-  handleSubmit = event => {
-    event.preventDefault();
-    this.props.changeUserName(this.state.search);
-    this.setState({ search: "" });
-  }
-
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit} >
-        <input type="text"
-               name="search"
-               placeholder="search"
-               value={this.state.search}
-               onChange={this.handleChange} />
-        <button type="submit">Search for a User</button>
-      </form>
-    );
-  }
-}
-
-function UserCard(props) {
-  return (
-    <div className="card">
-      <h2>{props.user.login}</h2>
-      <p className="location">{props.user.location}</p>
-      
-      <div>
-        <h4>Friends: </h4>
-        {props.followers.map(follower => (
-          <div className="name" key={follower.id}>{follower.login}</div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export default App;

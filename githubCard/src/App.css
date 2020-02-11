@@ -33,23 +33,26 @@
 }
 .card {
   margin: 0 auto;
-  width:30%;
-border: 1px solid black;
-background-color: rgb(228, 187, 187);
-border-radius: 10px;
-box-shadow: 8px 5px 6px -1px rgb(202, 129, 129);
-position:relative;
-top:90px;
-
+  width: 30%;
+  border: 1px solid black;
+  background-color: rgb(228, 187, 187);
+  border-radius: 10px;
+  box-shadow: 8px 5px 6px -1px rgb(202, 129, 129);
+  position: relative;
+  top: 90px;
 }
 
-.card h2{
+.card h2 {
   font-size: 2rem;
 }
-.name{
-  padding:3%;
+.name {
+  padding: 3%;
 }
 
-.location{
-  padding:3%;
+.location {
+  padding: 3%;
+}
+.form {
+  margin: 1% auto;
+  width: 50%;
 }
