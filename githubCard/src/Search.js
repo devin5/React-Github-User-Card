@@ -1,35 +1,42 @@
-import React from 'react'
-
+import React from "react";
+import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
 class Search extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = {
-          search: "",
-        };
-      }
-    
-      handleChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
-      }
-    
-      handleSubmit = event => {
-        event.preventDefault();
-        this.props.changeUserName(this.state.search);
-        this.setState({ search: "" });
-      }
-    
-      render() {
-        return (
-          <form onSubmit={this.handleSubmit} >
-            <input type="text"
-                   name="search"
-                   placeholder="search"
-                   value={this.state.search}
-                   onChange={this.handleChange} />
-            <button type="submit">Search for a User</button>
-          </form>
-        );
-      }
-    }
-    
-    export default Search
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: null
+    };
+  }
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.changeUser(this.state.username)
+  };
+
+  render() {
+    console.log(this.state);
+    return (
+      <>
+        <Form onSubmit={this.handleSubmit} className="form">
+          <FormGroup>
+            <Label for="username">Username</Label>
+            <Input
+              value={this.state.form}
+              type="text"
+              name="username"
+              id="username"
+              placeholder="username here"
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+
+          <Button>Submit</Button>
+        </Form>
+      </>
+    );
+  }
+}
+export default Search;
