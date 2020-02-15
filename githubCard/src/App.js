@@ -49,6 +49,7 @@ class App extends React.Component {
   render() {
     return (
       <>
+      <h1 data-testid='submitButtonTest'>github</h1>
         <Search changeUser={this.changeUser} />
         <UserCard followers={this.state.followers} user={this.state.user} />
       </>
